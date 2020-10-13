@@ -2,7 +2,7 @@
 while true
 do
     sudo virsh list --all
-    pause 2
+    sleep 2
     read -p "Please type in the VM name exactly: " answer
     if sudo virsh list --all --name | grep -q "$answer"
         then
