@@ -30,6 +30,6 @@ do
     elif true;
         then
             echo "ERROR Incorrect VM name!"
-    fi    
+    fi
 
 done
