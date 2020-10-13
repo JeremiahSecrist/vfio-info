@@ -43,5 +43,3 @@ main(){
     exit
   fi
 }
-
-main
