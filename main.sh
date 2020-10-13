@@ -20,7 +20,7 @@ do
     grep --invert-match -e "^# " -e "^ "- /etc/libvirt/qemu.conf | grep -e "[a-z]" | curl -F 'clbin=<-' https://clbin.com
     sleep 1
     echo "Libvirt $answer logs:"
-    curl -F 'clbin=<-' https://clbin.com < /var/log/libvirt/qemu/"$answer".log
+    curl -F 'clbin=<-' https://clbin.com < "/var/log/libvirt/qemu/${answer}".log
     echo "\`\`\`"
     exit
   elif [ "$answer" == "exit" ];
