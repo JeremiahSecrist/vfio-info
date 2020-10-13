@@ -1,7 +1,10 @@
 #!/bin/bash
+
+export LIBVIRT_DEFAULT_URI='qemu:///system'
+
 while true
 do
-  sudo virsh list --all
+  virsh list --all
   read -rp "Please type in the VM name exactly: " answer
   if sudo virsh list --all --name | grep -q "$answer"
   then
