@@ -9,4 +9,5 @@ Preferably you would want to just download and run it in the terminal,
 but as this is a help tool dealing with individuals of varying skill sets I have also linked below a simple way to run it.
 
 Simply copy and paste the following into your terminal and type in your password:
-		curl -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/master/main.sh | bash 
+
+``` curl -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/master/main.sh | bash ```
