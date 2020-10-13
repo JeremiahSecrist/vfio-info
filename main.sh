@@ -4,11 +4,11 @@ export LIBVIRT_DEFAULT_URI='qemu:///system'
 
 virsh list --all
 read -rp "Please type in the VM name exactly: " domain
-if sudo virsh domstate "${domain}"
+if virsh domstate "${domain}"
 then
   clear
   echo -e "\`\`\`\n${domain} XML dump:"
-  sudo virsh dumpxml "${domain}" | curl -F 'clbin=<-' https://clbin.com
+  virsh dumpxml "${domain}" | curl -F 'clbin=<-' https://clbin.com
   sleep 1
   echo "libvirt status:"
   systemctl status libvirtd | curl -F 'clbin=<-' https://clbin.com
