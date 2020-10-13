@@ -18,7 +18,7 @@ scrape(){
   if [[ -n ${qemuconf} ]]; then
     qemuconf="$(upload < "${qemuconf}" &)"
   fi
-  domlogs="$(cat "${loglocation}/vm1.log" | upload &)"
+  domlogs="$(upload < <("${loglocation}/vm1.log") &)"
   wait
 }
 
