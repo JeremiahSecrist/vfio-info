@@ -18,7 +18,8 @@ scrape(){
   if [[ -n ${qemuconf} ]]; then
     qemuconf="$(upload < "${qemuconf}" &)"
   fi
-  domlogs="$(upload < "${loglocation}/${domain}.log" &)"
+  printf "sudo is needed to read your domain logs"
+  domlogs="$(sudo cat "${loglocation}/vm1.log" | upload &)"
   wait
 }
 
@@ -27,7 +28,9 @@ output(){
   printf "${domain} XML dump:\n%s${xmldump}\n"
   printf "libvirt status:\n%s${libvirtstatus}\n"
   printf "Libvirt logs:\n%s${libvirtlogs}\n"
-  printf "qemu.conf:\n%s${qemuconf}\n"
+  if [[ -n ${qemuconf} ]]; then
+   printf "qemu.conf:\n%s${qemuconf}\n"
+  fi
   printf "Libvirt ${domain} logs:\n%s${domlogs}\n"
 }
 
