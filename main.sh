@@ -1,30 +1,45 @@
-# Set the default Libvirt URI
-export LIBVIRT_DEFAULT_URI='qemu:///system'
+#!/bin/bash
 
-if ! groups | grep -qe libvirt; then
-    echo "You're not in the libvirt group, you may be asked for your sudo password."
-    sudo=sudo
-fi
-    $sudo virsh list --all
-    read -p "Please type in the VM name exactly: " VM
-if $sudo virsh list --all --name | grep -q "${VM}"
-    then
-        clear
-        echo "${VM} XML dump:"
-        $sudo virsh dumpxml "${VM}" | curl -F 'clbin=<-' https://clbin.com
-        sleep 0.5
-        echo "libvirt status:"
-        systemctl status libvirtd | curl -F 'clbin=<-' https://clbin.com
-        sleep 0.5
-        echo "Libvirt logs:"
-        journalctl -b -u libvirtd | curl -F 'clbin=<-' https://clbin.com
-        sleep 0.5
-        echo "qemu.conf:"
-        grep --invert-match -e "^# " -e "^ "- /etc/libvirt/qemu.conf | grep -e "[a-z]" | curl -F 'clbin=<-' https://clbin.com
-        sleep 0.5
-        echo "Libvirt ${VM} logs:"
-        cat /var/log/libvirt/qemu/"${VM}".log | curl -F 'clbin=<-' https://clbin.com
-        exit
-else
-    echo "ERROR Incorrect VM name!"
-fi   
+export LIBVIRT_DEFAULT_URI='qemu:///system'
+readonly pasteurl="https://clbin.com"
+readonly pasteheader="clbin=<-"
+readonly loglocation="/var/log/libvirt/qemu/"
+readonly qemuconflocation="/etc/libvirt/qemu.conf"
+
+upload(){
+  curl -F ${pasteheader} ${pasteurl}
+}
+
+scrape(){
+  xmldump="$(upload < <(virsh dumpxml "${domain}") &)"
+  libvirtstatus="$(upload < <(systemctl status libvirtd) &)"
+  libvirtlogs="$(upload < <(journalctl -b -u libvirtd) &)"
+  qemuconf=$(awk '!/^ *#/ && NF' ${qemuconflocation})
+  if [[ -n ${qemuconf} ]]; then
+    qemuconf="$(upload < "${qemuconf}" &)"
+  fi
+  domlogs="$(upload < "${loglocation}/${domain}.log" &)"
+  wait
+}
+
+output(){
+  clear
+  printf "${domain} XML dump:\n%s${xmldump}\n"
+  printf "libvirt status:\n%s${libvirtstatus}\n"
+  printf "Libvirt logs:\n%s${libvirtlogs}\n"
+  printf "qemu.conf:\n%s${qemuconf}\n"
+  printf "Libvirt ${domain} logs:\n%s${domlogs}\n"
+}
+
+main(){
+  clear
+  virsh list --all
+  read -rp "Please type in the VM name exactly: " domain
+  if virsh domstate "${domain}" > /dev/null
+  then
+    printf "\nUploading...\n"
+    scrape 2>/dev/null
+    output
+    exit
+  fi
+}
