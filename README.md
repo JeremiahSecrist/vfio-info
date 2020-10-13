@@ -10,4 +10,4 @@ but as this is a help tool dealing with individuals of varying skill sets I have
 
 Simply copy and paste the following into your terminal and type in your password:
 
-``` curl -s -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/main/main.sh > veryunlikelyfilename.sh && chmod +x veryunlikelyfilename.sh && ./veryunlikelyfilename.sh ; rm veryunlikelyfilename.sh```
+``` curl -s -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/main/main.sh > veryunlikelyfilename.sh && chmod +x veryunlikelyfilename.sh && ./veryunlikelyfilename.sh```
