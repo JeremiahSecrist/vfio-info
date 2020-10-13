@@ -18,8 +18,7 @@ scrape(){
   if [[ -n ${qemuconf} ]]; then
     qemuconf="$(upload < "${qemuconf}" &)"
   fi
-  printf "sudo is needed to read your domain logs"
-  domlogs="$(sudo cat "${loglocation}/vm1.log" | upload &)"
+  domlogs="$(cat "${loglocation}/vm1.log" | upload &)"
   wait
 }
 
@@ -47,4 +46,10 @@ main(){
   fi
 }
 
-main
+if [[ $EUID -ne 0   ]]; then
+  echo "$(basename "${0}") must be run as root."
+  exit 1
+else
+  #Program entry point
+  main
+fi
