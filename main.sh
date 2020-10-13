@@ -14,7 +14,7 @@ scrape(){
   xmldump="$(upload < <(virsh dumpxml "${domain}") &)"
   libvirtstatus="$(upload < <(systemctl status libvirtd) &)"
   libvirtlogs="$(upload < <(journalctl -b -u libvirtd) &)"
-  domlogs="$(upload < <("${loglocation}/vm1.log") &)"
+  domlogs="$(upload < <("${loglocation}/${domain}.log") &)"
   qemuconf=$(awk '!/^ *#/ && NF' ${qemuconflocation})
   if [[ -n ${qemuconf} ]]; then
     qemuconf="$(upload < "${qemuconf}" &)"
