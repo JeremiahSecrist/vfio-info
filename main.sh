@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Set the default Libvirt URI
 export LIBVIRT_DEFAULT_URI='qemu:///system'
 
@@ -29,4 +27,4 @@ if $sudo virsh list --all --name | grep -q "${VM}"
         exit
 else
     echo "ERROR Incorrect VM name!"
-fi    
+fi   
