@@ -1,26 +1,47 @@
 #!/bin/bash
 
 export LIBVIRT_DEFAULT_URI='qemu:///system'
+readonly pasteurl="https://clbin.com"
+readonly pasteheader="clbin=<-"
+readonly loglocation="/var/log/libvirt/qemu/"
+readonly qemuconflocation="/etc/libvirt/qemu.conf"
 
-virsh list --all
-read -rp "Please type in the VM name exactly: " domain
-if virsh domstate "${domain}"
-then
+upload(){
+  curl -F ${pasteheader} ${pasteurl}
+}
+
+scrape(){
+  xmldump="$(upload < <(virsh dumpxml "${domain}") &)"
+  libvirtstatus="$(upload < <(systemctl status libvirtd) &)"
+  libvirtlogs="$(upload < <(journalctl -b -u libvirtd) &)"
+  qemuconf=$(awk '!/^ *#/ && NF' ${qemuconflocation})
+  if [[ -n ${qemuconf} ]]; then
+    qemuconf="$(upload < "${qemuconf}" &)"
+  fi
+  domlogs="$(upload < "${loglocation}/${domain}.log" &)"
+  wait
+}
+
+output(){
   clear
-  echo -e "\`\`\`\n${domain} XML dump:"
-  virsh dumpxml "${domain}" | curl -F 'clbin=<-' https://clbin.com
-  sleep 1
-  echo "libvirt status:"
-  systemctl status libvirtd | curl -F 'clbin=<-' https://clbin.com
-  sleep 1
-  echo "Libvirt logs:"
-  journalctl -b -u libvirtd | curl -F 'clbin=<-' https://clbin.com
-  sleep 1
-  echo "qemu.conf:"
-  grep --invert-match -e "^# " -e "^ "- /etc/libvirt/qemu.conf | grep -e "[a-z]" | curl -F 'clbin=<-' https://clbin.com
-  sleep 1
-  echo "Libvirt ${domain} logs:"
-  curl -F 'clbin=<-' https://clbin.com < "/var/log/libvirt/qemu/${domain}".log
-  echo "\`\`\`"
-  exit
-fi
+  printf "${domain} XML dump:\n%s${xmldump}\n"
+  printf "libvirt status:\n%s${libvirtstatus}\n"
+  printf "Libvirt logs:\n%s${libvirtlogs}\n"
+  printf "qemu.conf:\n%s${qemuconf}\n"
+  printf "Libvirt ${domain} logs:\n%s${domlogs}\n"
+}
+
+main(){
+  clear
+  virsh list --all
+  read -rp "Please type in the VM name exactly: " domain
+  if virsh domstate "${domain}" > /dev/null
+  then
+    printf "\nUploading...\n"
+    scrape 2>/dev/null
+    output
+    exit
+  fi
+}
+
+main
