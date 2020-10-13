@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 while true
 do
-  sudo virsh list --all
-  read -p "Please type in the VM name exactly: " answer
-    if sudo virsh list --all --name | grep "$answer";
+    sudo virsh list --all
+    read -p "Please type in the VM name exactly: " answer
+    if sudo virsh list --all --name | grep -q "$answer"
         then
             clear
             echo -e "\`\`\`\n$answer XML dump:"
