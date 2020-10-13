@@ -10,4 +10,4 @@ but as this is a help tool dealing with individuals of varying skill sets I have
 
 Simply copy and paste the following into your terminal and type in your password:
 
-``` curl -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/master/main.sh | bash ```
+``` curl -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/main/main.sh | bash ```
