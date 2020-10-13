@@ -31,5 +31,4 @@ do
   then
     echo "ERROR Incorrect VM name!"
   fi
-
 done
