@@ -14,12 +14,11 @@ scrape(){
   xmldump="$(upload < <(virsh dumpxml "${domain}") &)"
   libvirtstatus="$(upload < <(systemctl status libvirtd) &)"
   libvirtlogs="$(upload < <(journalctl -b -u libvirtd) &)"
+  domlogs="$(upload < <("${loglocation}/${domain}.log") &)"
   qemuconf=$(awk '!/^ *#/ && NF' ${qemuconflocation})
   if [[ -n ${qemuconf} ]]; then
     qemuconf="$(upload < "${qemuconf}" &)"
   fi
-  printf "sudo is needed to read your domain logs"
-  domlogs="$(sudo cat "${loglocation}/vm1.log" | upload &)"
   wait
 }
 
@@ -47,4 +46,10 @@ main(){
   fi
 }
 
-main
+if [[ $EUID -ne 0   ]]; then
+  echo "$(basename "${0}") must be run as root."
+  exit 1
+else
+  #Program entry point
+  main
+fi
