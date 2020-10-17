@@ -8,6 +8,9 @@ Feel Free to look over the script before running it as I personaly recomend.
 Preferably you would want to just download and run it in the terminal, 
 but as this is a help tool dealing with individuals of varying skill sets I have also linked below a simple way to run it.
 
-Simply copy and paste the following into your terminal and run sudo .veryunlikelyfilename.sh:
+Simply copy and paste the following into your terminal:
 
-``` [ -f "veryunlikelyfilename.sh" ] || curl -s -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/main/main.sh > veryunlikelyfilename.sh && chmod +x veryunlikelyfilename.sh ```
+` [ -f "veryunlikelyfilename.sh" ] || curl -s -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/main/main.sh > veryunlikelyfilename.sh && chmod +x veryunlikelyfilename.sh `
+
+Then run:
+`sudo ./veryunlikelyfilename.sh:`
