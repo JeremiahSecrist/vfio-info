@@ -10,7 +10,7 @@ but as this is a help tool dealing with individuals of varying skill sets I have
 
 Simply copy and paste the following into your terminal:
 
-` [ -f "veryunlikelyfilename.sh" ] || curl -s -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/main/main.sh > veryunlikelyfilename.sh && chmod +x veryunlikelyfilename.sh `
+` [ -f "info-vfio.sh" ] || curl -s -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/main/main.sh > info-vfio.sh && chmod +x info-vfio.sh `
 
 Then run:
-`sudo ./veryunlikelyfilename.sh:`
+`sudo ./info-vfio.sh:`
