@@ -10,7 +10,7 @@ but as this is a help tool dealing with individuals of varying skill sets I have
 
 Simply copy and paste the following into your terminal:
 
-` [ -f "info-vfio.sh" ] || curl -s -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/main/main.sh > info-vfio.sh && chmod +x info-vfio.sh `
+` [ -f "info-vfio.sh" ] || curl -s -L https://raw.githubusercontent.com/creatorofthesky/vfio-info/main/main.sh > info-vfio.sh ; chmod +x info-vfio.sh `
 
 Then run:
 `sudo ./info-vfio.sh:`
